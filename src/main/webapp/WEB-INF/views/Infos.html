@@ -1,0 +1,175 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Craft Wood</title>
+
+    <!-- Boostrap core css -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+
+    <!-- custom style -->
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+ <div class="col-4">
+   <div class="list-group">
+     <a class="list-group-item list-group-item-action test" th:href="@{'/commande/'}">Gestion des Commandes</a>
+   </div>
+ </div>
+ <div class="col-4">
+   <div class="list-group">
+     <a class="list-group-item list-group-item-action" th:href="@{'/client/'}">Gestion des Client</a>
+   </div>
+ </div>
+ <div class="col-4">
+   <div class="list-group">
+     <a class="list-group-item list-group-item-action" th:href="@{'/article/'}">Gestion des Articles</a>
+   </div>
+ </div>
+</div>
+        <section class="rightside">
+            <div class="nav" style="margin-top: 10px">
+                <ul class="nav nav-pills mb-3" >
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-outline-primary" style="margin-right: 10px"  th:href="@{'/commande/Add'}" >Nouveau Commande</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link btn btn-outline-primary" th:href="@{'/commande/'}" >Liste des Commandes</a>
+                      </li>
+                  </ul>
+            </div>
+            <div class="">            
+        <div class="">
+            <h1>Informations de Commande</h1>
+            <p>Numero de Commande: <span th:text="${datacmd[0].id_commande}"></span></p>
+            <p>Date de Commande: <span th:text="${datacmd[0].created_at}"></span></p>
+            <p> 
+            <form action="CommandeServlet" method="post">
+            <input type="hidden" name="op" value="etat">
+            <input type="hidden" name="id" th:value="${datacmd[0].id_commande}">
+            <label>Etat de Commande: <span th:value="${datacmd[0].etat}"></span></label>
+			<input type="submit" value="Changer Etat">
+            </form>
+            </p>
+        </div>
+
+        <div class="">
+            <h2>Informations Client </h2>
+            <table>
+                <tr>
+                    <th>Nom Client :</th>
+                    <td><span th:text="${datacmd[0].client.nom}"></span></td>
+                </tr>
+                <tr>
+                    <th>Tel :</th>
+                    <td><span th:text="${datacmd[0].client.tel}"></span></td>
+                </tr>
+                <tr>
+                    <th>Address :</th>
+                    <td><span th:text="${datacmd[0].client.adresse}"></span></td>
+                </tr>
+            </table>
+
+            <h2>Details de Commande</h2>
+            <table>
+                <tr>
+                    <th>Article</th>
+                    <th>Quantite</th>
+                    <th>Prix Unitaire</th>
+                    <th>Total</th>
+                </tr>
+                <tr th:each="article :${datacmd}">
+                    <td th:text="${article.art.libelle}"></td>
+                    <td th:text="${article.qty}"></td>
+                    <td th:text="${article.art.prix}"></td>
+                    <td th:text="${article.art.prix*article.qty}"> </td>
+                     </tr>
+            </table>
+
+            <div>
+                <p><strong>Total Commande : <span th:text="${datacmd[0].total}"></span></strong></p>
+            </div>
+        </div>
+    </div>
+        </section>
+    </div>
+<script> 
+var clientjson=null;
+$("#addclient").hide();
+$(document).ready(function() {
+	$('#nom').blur(function() {
+		$.ajax({
+			url : 'CommandeServlet?op=cl',
+			data : {
+				nom : $('#nom').val()
+			},
+			success : function(responseData) {
+                //var jsonResponse = JSON.parse(responseData);
+                 clientjson = responseData[0];
+                
+                if($.trim(responseData)){
+                $('#infosclient').append('<input type="hidden" name="idclient" value="'+responseData[0]["id_client"]+'" id="idclient" />');
+                $( "#infosclient" ).append("<label for='prenom'>Prenom client : "+responseData[0]["prenom"]+"</label><br><br>")
+                $( "#infosclient" ).append("<label for='tel'>Tel client : "+responseData[0]["tel"]+"</label><br><br>")
+                $( "#infosclient" ).append("<label for='adresse'>Adresse Client: "+responseData[0]["adresse"]+"</label><br><br>")
+                $("#addclient").hide();
+                }
+                else{
+                	$("#infosclient").hide();
+                	 $("#addclient").show();
+                    //$( "#infosclient" ).append("<label for='prenom'>Prenom client : "+responseData[0]["prenom"]+"</label><br><br>")
+                }
+			}
+		});
+	});
+	
+});
+var articlejson=null;
+$(document).ready(function() { 
+	$('#libelle').blur(function() {
+		$.ajax({
+			url : 'CommandeServlet?op=ar',
+			data : {
+				nom : $('#libelle').val()
+			},
+			success : function(responseData) {
+                //var jsonResponse = JSON.parse(responseData);
+                articlejson = responseData[0];
+              
+                if($.trim(responseData)){
+                /*$('#infosarticle').append('<input type="hidden" name="idarticle" value="'+responseData[0]["id_article"]+'" id="idarticle" />');*/
+                $( "#infosarticle" ).append("<tr>")
+                $( "#infosarticle" ).append("<td>"+responseData[0]["id_article"]+"</td>")
+				$( "#infosarticle" ).append("<td>"+responseData[0]["libelle"]+"</td>")
+				$( "#infosarticle" ).append("<td>"+responseData[0]["categorie"]+"</td>")
+				$( "#infosarticle" ).append("<td>"+responseData[0]["prix"]+"</td>")
+			    $( "#infosarticle" ).append("</tr>")
+
+                //$("#addclient").hide();
+                }
+                else{
+                	//$("#infosclient").hide();
+                	// $("#addclient").show();
+                    //$( "#infosclient" ).append("<label for='prenom'>Prenom client : "+responseData[0]["prenom"]+"</label><br><br>")
+                }
+			}
+		});
+	});
+});
+var listart=[];
+$('#addarticle').click( function() {
+	articlejson["qty"]=$('#qtyv').val()
+	listart.push(articlejson);
+	//console.log(JSON.stringify(listart));
+	$('#listart').val(JSON.stringify(listart));
+	console.log(document.getElementById('listart').value);
+	});
+
+</script>  
+</body>
+</html>

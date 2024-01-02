@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Craft Wood</title>
+
+    <!-- Boostrap core css -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+
+    <!-- custom style -->
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+ <div class="col-4">
+   <div class="list-group">
+     <a class="list-group-item list-group-item-action test" th:href="@{'/commande/'}">Gestion des Commandes</a>
+   </div>
+ </div>
+ <div class="col-4">
+   <div class="list-group">
+     <a class="list-group-item list-group-item-action" th:href="@{'/client/'}">Gestion des Client</a>
+   </div>
+ </div>
+ <div class="col-4">
+   <div class="list-group">
+     <a class="list-group-item list-group-item-action" th:href="@{'/article/'}">Gestion des Articles</a>
+   </div>
+ </div>
+</div>
+        <section class="rightside">
+            <div class="nav" style="margin-top: 10px">
+              <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                <li class="nav-item">
+                  <a class="nav-link btn btn-outline-primary" style="margin-right: 10px" th:href="@{'/article/Add'}"  >Nouveau Article</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link btn btn-outline-primary"  th:href="@{'/article/'}" >Liste des Articles</a>
+                </li>
+              </ul>
+            </div>
+            <div>
+               <div th:if="${mod}">
+				<h1>Modifier Article </h1>
+				<form action="operation" method="post">
+				<input type="hidden" name="op" value="modifier">
+                    <input type="hidden" name="id" th:value="${articledata.id_article}">
+                    <label for="">libelle</label>
+                    <input type="text" name="libelle" th:value="${articledata.libelle}" required="required"> <br><br>
+                    <label for="">categorie </label>
+                    <input type="text" name="categorie" th:value="${articledata.categorie}" required="required"><br><br>
+                    <label for="">prix</label>
+                    <input type="text" name="prix" th:value="${articledata.prix}" required="required"><br><br>
+                    <label for="">Quantite</label>
+                    <input type="text" name="stock" th:value="${articledata.stock}" required="required"><br><br>
+                    <input type="submit" class="btn btn-success" value="Modifier Article">
+				</form>
+				</div>
+				
+				<div th:unless="${mod}">
+				<h1>Nouveau Article </h1>
+				<form action="operation" method="post">
+                	<input type="hidden" name="op" value="ajouter">
+                    <label for="">libelle</label>
+                    <input type="text" name="libelle" required="required"> <br><br>
+                    <label for="">categorie </label>
+                    <input type="text" name="categorie" required="required"><br><br>
+                    <label for="">prix </label>
+                    <input type="text" name="prix" required="required"><br><br>
+                    <label for="">Quantite</label>
+                    <input type="number" name="stock" required="required"><br><br>
+                    <input type="submit" class="btn btn-success" value="Enregistrer Article">
+                    </form>
+				</div>
+                
+          
+              
+            </div>
+        </section>
+    </div>
+    
+</body>
+</html>

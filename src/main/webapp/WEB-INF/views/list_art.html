@@ -1,0 +1,88 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Craft Wood</title>
+
+    <!-- Boostrap core css -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+
+    <!-- custom style -->
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+ <div class="col-4">
+   <div class="list-group">
+     <a class="list-group-item list-group-item-action test" th:href="@{'/commande/'}">Gestion des Commandes</a>
+   </div>
+ </div>
+ <div class="col-4">
+   <div class="list-group">
+     <a class="list-group-item list-group-item-action" th:href="@{'/client/'}">Gestion des Client</a>
+   </div>
+ </div>
+ <div class="col-4">
+   <div class="list-group">
+     <a class="list-group-item list-group-item-action" th:href="@{'/article/'}">Gestion des Articles</a>
+   </div>
+ </div>
+</div>
+        <section class="rightside">
+            <div class="nav" style="margin-top: 10px">
+              <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                <li class="nav-item">
+                  <a class="nav-link btn btn-outline-primary" style="margin-right: 10px" th:href="@{'/article/Add'}"  >Nouveau Article</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link btn btn-outline-primary"  th:href="@{'/article/'}" >Liste des Articles</a>
+                </li>
+              </ul>
+            </div>
+            <div>
+                <h1>Liste des Articles </h1>
+                <input type="text" id="SearchArticle" onkeyup="myFunction()" placeholder="Recherche Par Libelle Article" title="Taper Libelle" style="width: 500px;">
+                
+                <table class="table" id="Table">
+                  <tr>
+                    <th scope="col">Libelle</th><th scope="col">Categorie</th><th scope="col">Prix</th><th scope="col">Stock</th><th scope="col"></th><th scope="col"></th>
+                  </tr>
+                  <tr th:each="article : ${data}"> 
+			                <td th:text="${article.libelle}"></td> 
+			                <td th:text="${article.categorie}"></td> 
+			                <td th:text="${article.prix}"></td> 
+			                <td th:text="${article.stock}"></td> 
+			                <td><a class="btn btn-danger" th:href="@{'/article/Delete/'+${article.id_article}}">Supprimer</a></td>
+			           		<td><a class="btn btn-primary" th:href="@{'/article/Update/'+${article.id_article}}">Modifier</a></td>
+			            </tr> 
+                  </tr>
+                </table>
+            </div>
+        </section>
+    </div>
+    <script>
+function myFunction() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("SearchArticle");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("Table");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }       
+  }
+}
+</script>   
+</body>
+</html>
