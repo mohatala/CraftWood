@@ -2,6 +2,7 @@ package com.talaini.craftwood.serviceImp;
 import java.util.List;
 
 
+import com.talaini.craftwood.config.JpaConfig;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,13 +22,10 @@ public class ArticleDAO implements I_Article{
 	@Transactional
 	public Article ajouterArticle(Article c) {
 		 // Ajouter Article
-		
 		Article ar=articleRepository.save(c);
-		articleRepository.flush();
 		log.debug("Article Ajouter"+ar.getId_article());
 		return this.afficherArticleAvecId(ar.getId_article());
 	}
-	
 	@Override
 	@Transactional
 	public Article modifierArticle(Article c) {

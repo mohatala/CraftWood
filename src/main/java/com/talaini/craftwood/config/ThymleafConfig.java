@@ -14,9 +14,9 @@ import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 
-@Configuration
-@EnableWebMvc
-@ComponentScan({"com.talaini.craftwood.controller"})
+//@Configuration
+//@EnableWebMvc
+//@ComponentScan({"com.talaini.craftwood.controller"})
 public class ThymleafConfig implements WebMvcConfigurer{
 	@Autowired
     private ApplicationContext applicationContext;

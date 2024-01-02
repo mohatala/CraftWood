@@ -1,21 +1,28 @@
 package com.talaini.craftwood.serviceImp;
 
-import com.sun.corba.se.spi.presentation.rmi.StubAdapter;
+import com.talaini.craftwood.config.JpaConfig;
 import com.talaini.craftwood.entity.Article;
-import com.talaini.craftwood.repository.ArticleRepository;
 import com.talaini.craftwood.service.I_Article;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@ContextConfiguration(classes = {JpaConfig.class})
+@ExtendWith(SpringExtension.class)
 class ArticleDAOTest {
-    @Autowired
-    private I_Article articleDAO;
 
     @Autowired
-    private ArticleRepository articleRepository;
+    ArticleDAO articleDAO;
     private Article testArticle;
 
 
@@ -31,15 +38,13 @@ class ArticleDAOTest {
     }
 
     @Test
-    void ajouterArticle() {
+    void ajouterArticleTest() {
         System.out.println("running add test");
         Article result = articleDAO.ajouterArticle(testArticle);
         System.out.println(result);
-      assertNotNull(result);
-
-
-        
+        assertNotNull(result);
     }
+
 
     @Test
     void modifierArticle() {
@@ -51,9 +56,9 @@ class ArticleDAOTest {
 
     @Test
     void afficherArticles() {
+        List l=articleDAO.afficherArticles();
+        assertNotNull(l);
     }
 
-    @Test
-    void supprimeArticle() {
-    }
+
 }

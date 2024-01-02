@@ -37,7 +37,7 @@ public class CommandeDAO implements I_Commande{
     @Autowired
     private ArticleRepository articleRepository;
     
-    @Autowired
+
     private ModelMapper modelMapper; 
     
     private I_Article artDao;
