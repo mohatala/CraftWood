@@ -43,15 +43,21 @@ class ArticleDAOTest {
         Article result = articleDAO.ajouterArticle(testArticle);
         System.out.println(result);
         assertNotNull(result);
+        assertEquals(testArticle.getId_article(), result.getId_article());
     }
 
 
     @Test
     void modifierArticle() {
+        Article result = articleDAO.modifierArticle(testArticle);
+        assertNotNull(result);
+        assertEquals(testArticle.getId_article(), result.getId_article());
+
     }
 
     @Test
     void afficherArticleAvecId() {
+
     }
 
     @Test
