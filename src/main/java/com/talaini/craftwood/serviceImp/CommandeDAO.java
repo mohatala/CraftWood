@@ -82,7 +82,7 @@ public class CommandeDAO implements I_Commande{
 	public List afficherCommandes(){
 		//afficher tous les commandes
 		List<Commande> commandesList=commandeRepository.findAll();
-		List<CommandeDTO> listcmd=new ArrayList<>();;
+		List<CommandeDTO> listcmd=new ArrayList<>();
 		for (Commande commande : commandesList) {
 			Commande cmd=new Commande.CommandeBuilder()
 														.setId_commande(commande.getId_commande())
