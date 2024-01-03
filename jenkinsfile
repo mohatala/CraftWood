@@ -1,1 +1,6 @@
-
+pipeline{
+  stages{
+    stage("check"){
+  echo "hello world"
+  }
+}
