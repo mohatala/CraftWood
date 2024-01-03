@@ -70,6 +70,6 @@ class CommandeDAOTest {
 
     @Test
     void supprimeCommandes() {
-        assertTrue(commandeDAO.supprimeCommandes(5));
+        assertTrue(commandeDAO.supprimeCommandes(10));
     }
 }
