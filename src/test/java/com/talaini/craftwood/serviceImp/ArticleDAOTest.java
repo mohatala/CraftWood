@@ -12,6 +12,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
+
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -46,6 +49,27 @@ class ArticleDAOTest {
         assertNotNull(result);
         assertEquals(testArticle.getId_article(), result.getId_article());
     }
+    @ParameterizedTest
+    @CsvFileSource(resources = "/test_article_data.csv", numLinesToSkip = 1)
+     void ajouterArticleTestCsv(String libelle, String categorie, double prix, int stock) {
+
+        Article newTestArticle=new Article.ArticleBuilder()
+                .setLibelle(libelle)
+                .setCategorie(categorie)
+                .setPrix(prix)
+                .setStock(stock)
+                .build();
+        Article result = articleDAO.ajouterArticle(newTestArticle);
+        System.out.println("Running add test");
+        System.out.println("Libelle: " + libelle + ", Categorie: " + categorie + ", Prix: " + prix + ", Stock: " + stock);
+        assertNotNull(result);
+        assertNotNull(libelle);
+        assertNotNull(categorie);
+        assertNotNull(prix);
+        assertNotNull(stock);
+
+    }
+
 
 
     @Test
@@ -70,6 +94,8 @@ class ArticleDAOTest {
         List<Article> articles = articleDAO.afficherArticles();
         assertNotNull(articles, "La liste d'articles ne devrait pas être nulle");
     }
+
+    @Test
     void supprimeArticle() {
 
         // Ajoute un article à la base de données pour tester la suppression
