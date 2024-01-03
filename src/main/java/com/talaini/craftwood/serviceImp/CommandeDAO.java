@@ -38,7 +38,7 @@ public class CommandeDAO implements I_Commande{
     private ArticleRepository articleRepository;
     
 
-    private ModelMapper modelMapper; 
+    private ModelMapper modelMapper=new ModelMapper();
     
     private I_Article artDao;
     LocalDate date = LocalDate.now();
@@ -172,17 +172,13 @@ public class CommandeDAO implements I_Commande{
 	@Transactional
 	public boolean supprimeCommandes(int id) {
 		//Delete from Table Commande Article
-        /*String query = "DELETE FROM commande_article WHERE id_commande = "+id;
-		int check= sqloperation.ajouterSql(query,null);
-   	   if(check>0) {
-   		   //Delete from Table Commande
-		   String query1 = "DELETE FROM commande WHERE id_commande = "+id;
-		   int check1= sqloperation.ajouterSql(query1,null);
-		   if(check1>0) {
-			   log.debug("Commande Supprimer");
-			   return true;
-		   }
-   	   }*/
+		Commande c=commandeRepository.findById(id).get();
+		cmdartRepo.deleteByCommande(c);
+		if(!cmdartRepo.existsById(id)){
+			commandeRepository.deleteById(id);
+			log.debug("Commande Supprimer");
+			return true;
+		}
 		return false;
 	}
 	

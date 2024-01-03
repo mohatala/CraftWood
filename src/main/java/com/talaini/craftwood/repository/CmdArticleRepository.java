@@ -12,4 +12,5 @@ import com.talaini.craftwood.entity.CommandeArticle;
 @Repository
 public interface CmdArticleRepository extends JpaRepository<CommandeArticle, Integer>{
 	public List<CommandeArticle> findBycommande(Commande commande);
+	public void deleteByCommande(Commande commande);
 }
