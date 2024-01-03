@@ -1,10 +1,15 @@
 pipeline{
   agent any
   stages{
-    stage('check'){
-    steps{
-  echo "hello world"
+        stage('Build'){
+            steps{
+                sh 'mvn clean install'
+            }
+        }
+        stage('Test'){
+              steps{
+                  echo "hello world"
+              }
+        }
   }
-  }
-}
 }
