@@ -13,6 +13,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -57,13 +58,41 @@ class ArticleDAOTest {
 
     @Test
     void afficherArticleAvecId() {
+        int articleId = testArticle.getId_article();
+        Article result = articleDAO.afficherArticleAvecId(5);
+        assertNotNull(result, "L'article récupéré ne devrait pas être nul");
+        // assertEquals(5, result.getId_article(), "L'ID de l'article ne correspond pas");
 
     }
 
     @Test
     void afficherArticles() {
-        List l=articleDAO.afficherArticles();
-        assertNotNull(l);
+        List<Article> articles = articleDAO.afficherArticles();
+        assertNotNull(articles, "La liste d'articles ne devrait pas être nulle");
+    }
+    void supprimeArticle() {
+
+        // Ajoute un article à la base de données pour tester la suppression
+        Article articleToDelete = new Article.ArticleBuilder()
+                .setLibelle("Article à supprimer")
+                .setCategorie("TestCategory")
+                .setPrix(15.0)
+                .setStock(30)
+                .build();
+
+        // Ajoute l'article à la base de données
+        Article addedArticle = articleDAO.ajouterArticle(articleToDelete);
+        assertNotNull(addedArticle, "L'ajout de l'article a échoué");
+
+        // Obtient l'ID de l'article ajouté
+        int articleIdToDelete = addedArticle.getId_article();
+
+        // Supprime l'article
+        articleDAO.supprimeArticle(articleIdToDelete);
+
+        // Tente de récupérer l'article supprimé
+        assertThrows(EntityNotFoundException.class, () -> articleDAO.afficherArticleAvecId(articleIdToDelete),
+                "Une EntityNotFoundException devrait être lancée car l'article a été supprimé");
     }
 
 
