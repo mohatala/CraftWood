@@ -57,7 +57,7 @@ public class CommandeDAO implements I_Commande{
     			JSONArray array = new JSONArray(listart);  
     			for(int i=0; i < array.length(); i++)   
     			{  
-    			JSONObject object = array.getJSONObject(i); 
+    			JSONObject object = array.getJSONObject(i);
     			int id=object.getInt("id_article");
     			Article art=articleRepository.findById(id).get();
     			//System.out.println(art);
