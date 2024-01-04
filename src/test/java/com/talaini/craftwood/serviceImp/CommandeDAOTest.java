@@ -27,9 +27,16 @@ class CommandeDAOTest {
     @Autowired
     ArticleDAO articleDAO;
 
+    Client client;
+    Article article;
+    Date date;
     @BeforeEach
     void setUp() {
         System.out.println("calling the before each");
+        client=new Client.ClientBuilder().setId_client(5).setNom("mohammed").build();
+        article =new Article.ArticleBuilder().setLibelle("article2").setCategorie("cat2")
+                .setPrix(500).setStock(50).build();
+        date =new Date();
     }
 
     @AfterEach
@@ -38,11 +45,7 @@ class CommandeDAOTest {
 
     @Test
     void ajouterCommande() {
-        Client client=new Client.ClientBuilder().setId_client(5).setNom("mohammed").build();
-        Article article =new Article.ArticleBuilder().setLibelle("article2").setCategorie("cat2")
-                .setPrix(500).setStock(50).build();
         Article ar=articleDAO.ajouterArticle(article);
-        Date date =new Date();
         Commande commande=new Commande.CommandeBuilder().setclient(client).setEtat("ENATTENTE")
                 .setcreated_at(date).setupdated_at(date).setTotal(500).build();
         String s="[{'id_article':"+ar.getId_article()+",'libelle':'"+ar.getLibelle()+"','categorie':'"+ar.getCategorie()+"','prix':"+ar.getPrix()+",'stock':"+ar.getStock()+",'qty':1}]";
@@ -51,25 +54,38 @@ class CommandeDAOTest {
 
     @Test
     void afficherCommandeAvecId() {
-        assertNotNull(commandeDAO.afficherCommandeAvecId(14));
+        Article ar=articleDAO.ajouterArticle(article);
+        Commande commande=new Commande.CommandeBuilder().setclient(client).setEtat("ENATTENTE")
+                .setcreated_at(date).setupdated_at(date).setTotal(500).build();
+        String s="[{'id_article':"+ar.getId_article()+",'libelle':'"+ar.getLibelle()+"','categorie':'"+ar.getCategorie()+"','prix':"+ar.getPrix()+",'stock':"+ar.getStock()+",'qty':1}]";
+        Commande cmd=commandeDAO.ajouterCommande(commande,s);
+        assertNotNull(commandeDAO.afficherCommandeAvecId(cmd.getId_commande()));
     }
 
     @Test
     void afficherCommandes() {
         List result=commandeDAO.afficherCommandes();
         assertNotNull(result);
-
     }
 
     @Test
     void afficherInfosCommande() {
-
-        List result=commandeDAO.afficherInfosCommande(14);
+        Article ar=articleDAO.ajouterArticle(article);
+        Commande commande=new Commande.CommandeBuilder().setclient(client).setEtat("ENATTENTE")
+                .setcreated_at(date).setupdated_at(date).setTotal(500).build();
+        String s="[{'id_article':"+ar.getId_article()+",'libelle':'"+ar.getLibelle()+"','categorie':'"+ar.getCategorie()+"','prix':"+ar.getPrix()+",'stock':"+ar.getStock()+",'qty':1}]";
+        Commande cmd=commandeDAO.ajouterCommande(commande,s);
+        List result=commandeDAO.afficherInfosCommande(cmd.getId_commande());
         assertNotNull(result);
     }
 
     @Test
     void supprimeCommandes() {
-        assertTrue(commandeDAO.supprimeCommandes(10));
+        Article ar=articleDAO.ajouterArticle(article);
+        Commande commande=new Commande.CommandeBuilder().setclient(client).setEtat("ENATTENTE")
+                .setcreated_at(date).setupdated_at(date).setTotal(500).build();
+        String s="[{'id_article':"+ar.getId_article()+",'libelle':'"+ar.getLibelle()+"','categorie':'"+ar.getCategorie()+"','prix':"+ar.getPrix()+",'stock':"+ar.getStock()+",'qty':1}]";
+        Commande cmd=commandeDAO.ajouterCommande(commande,s);
+        assertTrue(commandeDAO.supprimeCommandes(cmd.getId_commande()));
     }
 }
