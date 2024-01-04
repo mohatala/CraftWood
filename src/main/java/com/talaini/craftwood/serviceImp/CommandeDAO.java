@@ -25,6 +25,9 @@ import com.talaini.craftwood.entity.Etat;
 import com.talaini.craftwood.repository.ArticleRepository;
 import com.talaini.craftwood.repository.CmdArticleRepository;
 import com.talaini.craftwood.repository.CommandeRepository;
+
+import javax.persistence.EntityNotFoundException;
+
 @Service
 public class CommandeDAO implements I_Commande{
 
@@ -172,7 +175,7 @@ public class CommandeDAO implements I_Commande{
 	@Transactional
 	public boolean supprimeCommandes(int id) {
 		//Delete from Table Commande Article
-		Commande c=commandeRepository.findById(id).get();
+		Commande c=commandeRepository.findById(id).orElseThrow(EntityNotFoundException::new);
 		cmdartRepo.deleteByCommande(c);
 		if(!cmdartRepo.existsById(id)){
 			commandeRepository.deleteById(id);
