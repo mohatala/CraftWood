@@ -86,6 +86,7 @@ class CommandeDAOTest {
                 .setcreated_at(date).setupdated_at(date).setTotal(500).build();
         String s="[{'id_article':"+ar.getId_article()+",'libelle':'"+ar.getLibelle()+"','categorie':'"+ar.getCategorie()+"','prix':"+ar.getPrix()+",'stock':"+ar.getStock()+",'qty':1}]";
         Commande cmd=commandeDAO.ajouterCommande(commande,s);
+        System.out.println(cmd.getId_commande());
         assertTrue(commandeDAO.supprimeCommandes(cmd.getId_commande()));
     }
 }
