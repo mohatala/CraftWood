@@ -12,6 +12,8 @@ import com.talaini.craftwood.entity.Article;
 import com.talaini.craftwood.service.I_Article;
 import com.talaini.craftwood.repository.ArticleRepository;
 
+import javax.persistence.EntityNotFoundException;
+
 @Service
 public class ArticleDAO implements I_Article{
 
@@ -40,9 +42,7 @@ public class ArticleDAO implements I_Article{
 	@Transactional
 	public Article afficherArticleAvecId(int id){
 		//Afficher Les Article Par id article
-		System.out.println("hello");
-		System.out.println(id);
-		 Article ar=articleRepository.findById(id).get();
+		 Article ar=articleRepository.findById(id).orElseThrow(EntityNotFoundException::new);
 			log.debug("Article afficher avec id="+id);
 
 		return ar; 

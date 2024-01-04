@@ -45,7 +45,6 @@ class ArticleDAOTest {
     void ajouterArticleTest() {
         System.out.println("running add test");
         Article result = articleDAO.ajouterArticle(testArticle);
-        System.out.println(result);
         assertNotNull(result);
         assertEquals(testArticle.getId_article(), result.getId_article());
     }
@@ -60,8 +59,6 @@ class ArticleDAOTest {
                 .setStock(stock)
                 .build();
         Article result = articleDAO.ajouterArticle(newTestArticle);
-        System.out.println("Running add test");
-        System.out.println("Libelle: " + libelle + ", Categorie: " + categorie + ", Prix: " + prix + ", Stock: " + stock);
         assertNotNull(result);
         assertNotNull(libelle);
         assertNotNull(categorie);
@@ -82,11 +79,8 @@ class ArticleDAOTest {
 
     @Test
     void afficherArticleAvecId() {
-        int articleId = testArticle.getId_article();
-        Article result = articleDAO.afficherArticleAvecId(5);
+        Article result = articleDAO.afficherArticleAvecId(articleDAO.ajouterArticle(testArticle).getId_article());
         assertNotNull(result, "L'article récupéré ne devrait pas être nul");
-        // assertEquals(5, result.getId_article(), "L'ID de l'article ne correspond pas");
-
     }
 
     @Test
@@ -98,16 +92,7 @@ class ArticleDAOTest {
     @Test
     void supprimeArticle() {
 
-
-        Article articleToDelete = new Article.ArticleBuilder()
-                .setLibelle("Article à supprimer")
-                .setCategorie("TestCategory")
-                .setPrix(15.0)
-                .setStock(30)
-                .build();
-
-
-        Article addedArticle = articleDAO.ajouterArticle(articleToDelete);
+        Article addedArticle = articleDAO.ajouterArticle(testArticle);
         assertNotNull(addedArticle, "L'ajout de l'article a échoué");
 
         // Obtient l'ID de l'article ajouté
