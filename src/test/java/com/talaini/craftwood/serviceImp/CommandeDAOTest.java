@@ -27,53 +27,61 @@ class CommandeDAOTest {
     @Autowired
     ArticleDAO articleDAO;
 
+    @Autowired
+    ClientDAO clientDAO;
     Client client;
     Article article;
+    Commande commande;
+    String s;
     Date date;
+    
     @BeforeEach
     void setUp() {
+        date =new Date();
         System.out.println("calling the before each");
-        client=new Client.ClientBuilder().setId_client(5).setNom("mohammed").build();
+        client=new Client.ClientBuilder().setNom("mohammed").setPrenom("talaini").setTel("06412585325").setAdresse("casablanca").build();
         article =new Article.ArticleBuilder().setLibelle("article2").setCategorie("cat2")
                 .setPrix(500).setStock(50).build();
-        date =new Date();
+        commande=new Commande.CommandeBuilder().setclient(client).setEtat("ENATTENTE")
+                .setcreated_at(date).setupdated_at(date).setTotal(500).build();
+        article=articleDAO.ajouterArticle(article);
+        client=clientDAO.ajouterClient(client);
+        s="[{'id_article':"+article.getId_article()+",'libelle':'"+article.getLibelle()+"','categorie':'"+article.getCategorie()+"','prix':"+article.getPrix()+",'stock':"+article.getStock()+",'qty':1}]";
+
     }
 
     @AfterEach
     void tearDown() {
+        System.out.println("calling the after each");
+        if (client != null && client.getId_client() != 0) {
+            clientDAO.supprimeClient(client.getId_client());
+        }
+        
+        if (article != null && article.getId_article() != 0) {
+            articleDAO.supprimeArticle(article.getId_article());
+        }
     }
 
     @Test
     void ajouterCommande() {
-        Article ar=articleDAO.ajouterArticle(article);
-        Commande commande=new Commande.CommandeBuilder().setclient(client).setEtat("ENATTENTE")
-                .setcreated_at(date).setupdated_at(date).setTotal(500).build();
-        String s="[{'id_article':"+ar.getId_article()+",'libelle':'"+ar.getLibelle()+"','categorie':'"+ar.getCategorie()+"','prix':"+ar.getPrix()+",'stock':"+ar.getStock()+",'qty':1}]";
         assertNotNull(commandeDAO.ajouterCommande(commande,s));
     }
 
     @Test
     void afficherCommandeAvecId() {
-        Article ar=articleDAO.ajouterArticle(article);
-        Commande commande=new Commande.CommandeBuilder().setclient(client).setEtat("ENATTENTE")
-                .setcreated_at(date).setupdated_at(date).setTotal(500).build();
-        String s="[{'id_article':"+ar.getId_article()+",'libelle':'"+ar.getLibelle()+"','categorie':'"+ar.getCategorie()+"','prix':"+ar.getPrix()+",'stock':"+ar.getStock()+",'qty':1}]";
         Commande cmd=commandeDAO.ajouterCommande(commande,s);
         assertNotNull(commandeDAO.afficherCommandeAvecId(cmd.getId_commande()));
     }
 
     @Test
     void afficherCommandes() {
+        Commande cmd=commandeDAO.ajouterCommande(commande,s);
         List result=commandeDAO.afficherCommandes();
         assertNotNull(result);
     }
 
     @Test
     void afficherInfosCommande() {
-        Article ar=articleDAO.ajouterArticle(article);
-        Commande commande=new Commande.CommandeBuilder().setclient(client).setEtat("ENATTENTE")
-                .setcreated_at(date).setupdated_at(date).setTotal(500).build();
-        String s="[{'id_article':"+ar.getId_article()+",'libelle':'"+ar.getLibelle()+"','categorie':'"+ar.getCategorie()+"','prix':"+ar.getPrix()+",'stock':"+ar.getStock()+",'qty':1}]";
         Commande cmd=commandeDAO.ajouterCommande(commande,s);
         List result=commandeDAO.afficherInfosCommande(cmd.getId_commande());
         assertNotNull(result);
@@ -81,12 +89,7 @@ class CommandeDAOTest {
 
     @Test
     void supprimeCommandes() {
-        Article ar=articleDAO.ajouterArticle(article);
-        Commande commande=new Commande.CommandeBuilder().setclient(client).setEtat("ENATTENTE")
-                .setcreated_at(date).setupdated_at(date).setTotal(500).build();
-        String s="[{'id_article':"+ar.getId_article()+",'libelle':'"+ar.getLibelle()+"','categorie':'"+ar.getCategorie()+"','prix':"+ar.getPrix()+",'stock':"+ar.getStock()+",'qty':1}]";
         Commande cmd=commandeDAO.ajouterCommande(commande,s);
-        System.out.println(cmd);
         assertTrue(commandeDAO.supprimeCommandes(cmd.getId_commande()));
     }
 }

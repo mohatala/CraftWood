@@ -80,10 +80,12 @@ public class ClientDAO implements I_Client{
 		//Supprimer le client et ses commandes
 		Client client=clientRepository.findById(id).get();
 		Commande cmd=commandeRepository.findByClient(client);
-		if(cmdDao.supprimeCommandes(cmd.getId_commande())){
+		if(cmd!=null && cmdDao.supprimeCommandes(cmd.getId_commande())){
+			clientRepository.delete(client);
+			return true;
+		}else {
 			clientRepository.delete(client);
 			return true;
 		}
-		return false;
 	}
 }
