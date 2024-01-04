@@ -4,6 +4,7 @@ import com.talaini.craftwood.config.JpaConfig;
 import com.talaini.craftwood.entity.Article;
 import com.talaini.craftwood.service.I_Article;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
