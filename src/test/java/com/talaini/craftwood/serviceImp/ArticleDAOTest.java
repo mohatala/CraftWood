@@ -65,6 +65,10 @@ class ArticleDAOTest {
         assertNotNull(prix);
         assertNotNull(stock);
 
+             if (newTestArticle != null && newTestArticle.getId_article() != 0) {
+            articleDAO.supprimeArticle(newTestArticle.getId_article());
+        }
+
     }
 
 
@@ -105,6 +109,15 @@ class ArticleDAOTest {
         assertThrows(EntityNotFoundException.class, () -> articleDAO.afficherArticleAvecId(articleIdToDelete),
                 "Une EntityNotFoundException devrait être lancée car l'article a été supprimé");
     }
+    @AfterEach
+    void afterEach() {
+        System.out.println("deleteing after each");
+        if (testArticle != null && testArticle.getId_article() != 0) {
+            articleDAO.supprimeArticle(testArticle.getId_article());
+        }
+
+    }
+
 
 
 }
