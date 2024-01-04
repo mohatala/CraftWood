@@ -8,6 +8,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.talaini.craftwood.entity.Commande;
+import com.talaini.craftwood.repository.CommandeRepository;
+import com.talaini.craftwood.service.I_Commande;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -19,12 +22,19 @@ import com.talaini.craftwood.entity.Client;
 import com.talaini.craftwood.repository.ClientRepository;
 import com.talaini.craftwood.service.I_Client;
 
+import javax.persistence.EntityNotFoundException;
+
 @Service
 public class ClientDAO implements I_Client{
 	
     @Autowired
     private ClientRepository clientRepository;
-    
+
+	@Autowired
+	CommandeRepository commandeRepository;
+
+	@Autowired
+	I_Commande cmdDao;
     static Logger log = Logger.getLogger(CommandeDAO.class.getName());  
 
 	@Override
@@ -50,10 +60,10 @@ public class ClientDAO implements I_Client{
 	@Transactional
 	public Client afficherClientAvecId(int id){
 		//Afficher Les information de client par id client
-		 	Client cl=clientRepository.findById(id).get();
+		 	Client cl=clientRepository.findById(id).orElseThrow(EntityNotFoundException::new);
 			log.debug("Client afficher avec id"+id);
-			return cl; 
-	}
+			return cl;
+    }
 
 	@Override
 	@Transactional
@@ -68,25 +78,12 @@ public class ClientDAO implements I_Client{
 	@Transactional
 	public boolean supprimeClient(int id) {
 		//Supprimer le client et ses commandes
-		/*Commande cmd=null;
-		CommandeDAO cmddao=new CommandeDAO();
-		String qry="select id_commande from commande where id_client="+id;
-		st=sqloperation.getSql(qry);
-		try {
-			while (st.next()) {
-				cmd=new Commande.CommandeBuilder().setId_commande(st.getInt(1)).build();
-				cmddao.supprimeCommandes(cmd.getId_commande());
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		Client client=clientRepository.findById(id).get();
+		Commande cmd=commandeRepository.findByClient(client);
+		if(cmdDao.supprimeCommandes(cmd.getId_commande())){
+			clientRepository.delete(client);
+			return true;
 		}
-        String query = "DELETE FROM client WHERE id_client = "+id;
-		int check= sqloperation.ajouterSql(query,null);
-	   if(check>0) {
-			log.debug("Client supprimer");
-		   return true;
-	   }*/
 		return false;
 	}
 }
