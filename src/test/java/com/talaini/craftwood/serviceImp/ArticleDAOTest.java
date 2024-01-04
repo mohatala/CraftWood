@@ -105,7 +105,7 @@ class ArticleDAOTest {
 
         // Supprime l'article
         articleDAO.supprimeArticle(articleIdToDelete);
-
+        testArticle=null;
         // Tente de récupérer l'article supprimé
         assertThrows(EntityNotFoundException.class, () -> articleDAO.afficherArticleAvecId(articleIdToDelete),
                 "Une EntityNotFoundException devrait être lancée car l'article a été supprimé");
