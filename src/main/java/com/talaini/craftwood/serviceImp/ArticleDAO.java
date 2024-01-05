@@ -2,8 +2,7 @@ package com.talaini.craftwood.serviceImp;
 import java.util.List;
 
 
-import com.talaini.craftwood.config.JpaConfig;
-import org.apache.log4j.Logger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,13 +18,11 @@ public class ArticleDAO implements I_Article{
 
 	@Autowired
 	private ArticleRepository articleRepository;
-    Logger log = Logger.getLogger(CommandeDAO.class.getName());
 	@Override
 	@Transactional
 	public Article ajouterArticle(Article c) {
 		 // Ajouter Article
 		Article ar=articleRepository.save(c);
-		log.debug("Article Ajouter"+ar.getId_article());
 		return this.afficherArticleAvecId(ar.getId_article());
 	}
 	@Override
@@ -34,7 +31,6 @@ public class ArticleDAO implements I_Article{
 		 // Modifier Article
 		Article ar=articleRepository.save(c);
 		articleRepository.flush();
-		log.debug("Article Modifie"+ar.getId_article());
 		   return this.afficherArticleAvecId(c.getId_article());
 	}
 	
@@ -43,8 +39,6 @@ public class ArticleDAO implements I_Article{
 	public Article afficherArticleAvecId(int id){
 		//Afficher Les Article Par id article
 		 Article ar=articleRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-			log.debug("Article afficher avec id="+id);
-
 		return ar; 
 	}
 	
@@ -54,7 +48,6 @@ public class ArticleDAO implements I_Article{
 		//Afficher tous Les Articles
 
 		List articlesList=articleRepository.findAll();
-			log.debug("afficher list des Articles");
 
 		return articlesList; 
 	}
@@ -65,7 +58,6 @@ public class ArticleDAO implements I_Article{
 			//Supprimer Article
         	articleRepository.deleteById(id);
         	if(!articleRepository.existsById(id)) {
-        		log.debug("Article Supprimer");
      		   return true;
      	   }
      		return false;

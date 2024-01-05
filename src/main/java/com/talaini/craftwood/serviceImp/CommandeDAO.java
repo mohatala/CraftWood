@@ -3,10 +3,8 @@ package com.talaini.craftwood.serviceImp;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.modelmapper.ModelMapper;
@@ -21,7 +19,6 @@ import com.talaini.craftwood.entity.Commande;
 import com.talaini.craftwood.entity.CommandeArticle;
 import com.talaini.craftwood.service.I_Article;
 import com.talaini.craftwood.service.I_Commande;
-import com.talaini.craftwood.entity.Etat;
 import com.talaini.craftwood.repository.ArticleRepository;
 import com.talaini.craftwood.repository.CmdArticleRepository;
 import com.talaini.craftwood.repository.CommandeRepository;
@@ -46,7 +43,6 @@ public class CommandeDAO implements I_Commande{
     private I_Article artDao;
     LocalDate date = LocalDate.now();
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    static Logger log = Logger.getLogger(CommandeDAO.class.getName());  
 
     @Override
     @Transactional
@@ -67,8 +63,7 @@ public class CommandeDAO implements I_Commande{
     			CommandeArticle cmdart=new CommandeArticle(cmd,art,object.getInt("qty"));
     			cmdartRepo.saveAndFlush(cmdart);
     			}
-    		 log.debug("Commande Ajouter");
-    		 
+
                 return cmd;
 
 	}
@@ -77,8 +72,7 @@ public class CommandeDAO implements I_Commande{
 	public Commande afficherCommandeAvecId(int id){
 		//Afficher une commande avec id commande
 		Commande cmd=commandeRepository.findById(id).get();
-		log.debug("Afficher Commande  id"+id);
-		return cmd; 
+		return cmd;
 	}
 	@Override
 	@Transactional
@@ -97,8 +91,7 @@ public class CommandeDAO implements I_Commande{
 			CommandeDTO cmdDTO = this.modelMapper.map(cmd, CommandeDTO.class);
 			listcmd.add(cmdDTO);
 		}
-		log.debug("afficher list Commandes");
-		return listcmd; 
+		return listcmd;
 	}
 	
 	@Override
@@ -122,8 +115,7 @@ public class CommandeDAO implements I_Commande{
 				cad.setQty(c.getQty());
 				list_cmdartDTO.add(cad);
 			}
-			log.debug("Afficher les infos commande");
-			
+
 		return list_cmdartDTO; 
 	}
 		
@@ -179,7 +171,6 @@ public class CommandeDAO implements I_Commande{
 		cmdartRepo.deleteByCommande(c);
 		if(!cmdartRepo.existsById(id)){
 			commandeRepository.deleteById(id);
-			log.debug("Commande Supprimer");
 			return true;
 		}
 		return false;

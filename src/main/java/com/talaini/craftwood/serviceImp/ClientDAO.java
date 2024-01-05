@@ -11,7 +11,6 @@ import java.util.List;
 import com.talaini.craftwood.entity.Commande;
 import com.talaini.craftwood.repository.CommandeRepository;
 import com.talaini.craftwood.service.I_Commande;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -35,7 +34,6 @@ public class ClientDAO implements I_Client{
 
 	@Autowired
 	I_Commande cmdDao;
-    static Logger log = Logger.getLogger(CommandeDAO.class.getName());  
 
 	@Override
 	@Transactional
@@ -43,7 +41,6 @@ public class ClientDAO implements I_Client{
 		 // Ajouter Client
 		Client cl=clientRepository.saveAndFlush(c);
 		
-		log.debug("Client ajouter"+cl.getId_client());
 		return this.afficherClientAvecId(cl.getId_client());
 	}
 	
@@ -52,7 +49,6 @@ public class ClientDAO implements I_Client{
 	public Client modifierClient(Client c) {
 		 // Modifier Client
 		Client cl=clientRepository.saveAndFlush(c);
-		log.debug("Client Modifier"+cl.getId_client());
 		return this.afficherClientAvecId(c.getId_client());
 	}
 	
@@ -61,7 +57,6 @@ public class ClientDAO implements I_Client{
 	public Client afficherClientAvecId(int id){
 		//Afficher Les information de client par id client
 		 	Client cl=clientRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-			log.debug("Client afficher avec id"+id);
 			return cl;
     }
 
@@ -70,8 +65,7 @@ public class ClientDAO implements I_Client{
 	public List<Client> afficherClients(){
 		//Afficher tous les clients
 			List<Client> clients=clientRepository.findAll();
-			log.debug("afficher list Clients");
-		return clients; 
+		return clients;
 	}
 	
 	@Override
