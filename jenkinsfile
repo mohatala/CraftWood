@@ -8,7 +8,7 @@ tools {
   stages{
         stage('Build'){
             steps{
-                bat 'mvn -Dmaven.test.skip=true install'
+                bat 'mvn -Dmaven.test.skip=true clean install'
             }
         }
         stage('Test'){
