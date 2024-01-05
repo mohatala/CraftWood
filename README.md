@@ -17,6 +17,8 @@ Gestion des tâches : Trello<br/>
 Système de Gestion de Version : Git et Github<br/>
 Logging : SLF4J (Simple Logging Facade for Java) pour la gestion des journaux**<br/>
 ## Documentation de Test avec Junit
+Fichier PDF contient les Informations a propos les Tests effectuer <br/>
+[Afficher PDF](https://github.com/mohatala/CraftWood/blob/main/Documentation%20%7BOrderCraft%20-%20Tests%20Unitaires%7D.pdf)
 ## Conception <b>UML</b>
 <b> Diagramme de Cas d'Utilisation:</b><br/>
 ![alt text](https://github.com/mohatala/CraftWood/blob/main/usecase%20Craft.drawio%20(1).png)<br/><br/>
