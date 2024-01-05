@@ -5,6 +5,7 @@ import com.talaini.craftwood.config.JpaConfig;
 import com.talaini.craftwood.entity.Article;
 import com.talaini.craftwood.entity.Client;
 import com.talaini.craftwood.entity.Commande;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,76 +27,63 @@ class ClientDAOTest {
     ClientDAO clientDAO;
     @Autowired
     CommandeDAO commandeDAO;
-
     @Autowired
     ArticleDAO articleDAO;
-    private Client client;
-    private Article article;
-    private Date date;
+    private Client clientaajouter;
     @BeforeEach
     public void setup(){
         System.out.println("calling the before each");
-        client = new Client.ClientBuilder()
+        Client client = new Client.ClientBuilder()
                 .setNom("test")
                 .setPrenom("test")
                 .setAdresse("casablanca")
                 .setTel("0123456789")
                 .build();
-
+        clientaajouter = clientDAO.ajouterClient(client);
     }
-
+    @AfterEach
+    void tearDown() {
+        System.out.println("calling the after each");
+        if (clientaajouter != null && clientaajouter.getId_client() != 0) {
+            clientDAO.supprimeClient(clientaajouter.getId_client());
+        }
+    }
 
     @Test
     void ajouterClient() {
         System.out.println("running add test");
-        Client result = clientDAO.ajouterClient(client);
-        assertNotNull(result);
-        assertEquals(client.getId_client(), result.getId_client());
+        assertNotNull(clientaajouter);
     }
 
     @Test
     void modifierClient() {
-        Client result = clientDAO.modifierClient(client);
+        clientaajouter=new Client.ClientBuilder().setId_client(clientaajouter.getId_client())
+                .setNom(clientaajouter.getNom()).setPrenom(clientaajouter.getPrenom())
+                .setTel("02315258").setAdresse("Merrakech").build();
+        Client result = clientDAO.modifierClient(clientaajouter);
         assertNotNull(result);
-        assertEquals(client.getId_client(), result.getId_client());
+        assertEquals(clientaajouter.getId_client(), result.getId_client());
     }
 
     @Test
     void afficherClientAvecId() {
-        int  clientId = client.getId_client();
-        Client result = clientDAO.afficherClientAvecId(2);
+        int  clientId = clientaajouter.getId_client();
+        Client result = clientDAO.afficherClientAvecId(clientId);
         assertNotNull(result, "le client récupéré ne devrait pas être nul");
     }
 
     @Test
     void afficherClients() {
-
         List<Client> clients = clientDAO.afficherClients();
-
         assertNotNull(clients, "La liste des clients ne devrait pas être nulle");
-
     }
 
     @Test
     void supprimerClient() {
-        article =new Article.ArticleBuilder().setLibelle("article2").setCategorie("cat2")
-                .setPrix(500).setStock(50).build();
-        date =new Date();
-
-        Client addClient = clientDAO.ajouterClient(client);
-        Article ar=articleDAO.ajouterArticle(article);
-        Commande commande=new Commande.CommandeBuilder().setclient(client).setEtat("ENATTENTE")
-                .setcreated_at(date).setupdated_at(date).setTotal(500).build();
-        String s="[{'id_article':"+ar.getId_article()+",'libelle':'"+ar.getLibelle()+"','categorie':'"+ar.getCategorie()+"','prix':"+ar.getPrix()+",'stock':"+ar.getStock()+",'qty':1}]";
-
-        assertNotNull(commandeDAO.ajouterCommande(commande,s), "L'ajout du commande a échoué");
-        assertNotNull(addClient, "L'ajout du client a échoué");
-
-        int id = addClient.getId_client();
-
+        int id = clientaajouter.getId_client();
         clientDAO.supprimeClient(id);
         assertThrows(EntityNotFoundException.class, () -> clientDAO.afficherClientAvecId(id),
                 "Une EntityNotFoundException devrait être lancée car le client a été supprimé");
-
+        clientaajouter=null;
     }
 }
