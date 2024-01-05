@@ -13,9 +13,7 @@ tools {
         }
         stage('Test'){
               steps{
-                  bat 'mvn test -Dtest=CommandeDAOTest'
-                  bat 'mvn test -Dtest=ClientDAOTest'
-                  bat 'mvn test -Dtest=ArticleDAOTest'
+                  bat 'mvn test
               }
         }
   }
