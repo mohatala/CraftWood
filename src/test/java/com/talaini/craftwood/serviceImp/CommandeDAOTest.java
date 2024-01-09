@@ -90,6 +90,6 @@ class CommandeDAOTest {
     @Test
     void supprimeCommandes() {
         Commande cmd=commandeDAO.ajouterCommande(commande,s);
-        assertTrue(commandeDAO.supprimeCommandes(100));
+        assertTrue(commandeDAO.supprimeCommandes(cmd.getId_commande()));
     }
 }
