@@ -86,4 +86,24 @@ class ClientDAOTest {
                 "Une EntityNotFoundException devrait être lancée car le client a été supprimé");
         clientaajouter=null;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
